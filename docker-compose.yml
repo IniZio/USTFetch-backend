@@ -1,0 +1,33 @@
+version: '3.1'
+services: 
+  nginx:
+    build: ./docker-images/nginx
+    ports: 
+      - "80:80"
+    depends_on:
+      - php
+      - mongo
+    links: 
+      - mongo
+  php:
+    build: ./docker-images/php
+    volumes:
+      - ./:/var/www
+      - ./storage/app:/var/www/storage/app
+      - ./storage/logs:/var/www/storage/logs
+    working_dir: /var/www/
+  composer:
+    image: composer/composer
+    volumes:
+      - ./:/var/www
+    working_dir: /var/www
+    depends_on:
+      - php
+    command: install --ignore-platform-reqs --no-dev --optimize-autoloader
+  mongo:
+    image: mongo
+    volumes:
+      - /data/mongodb/db:/data/db
+    ports:
+      - "27017:27017"
+    command: --port 27017 --ipv6 --storageEngine wiredTiger
