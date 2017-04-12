@@ -3,11 +3,12 @@ services:
   nginx:
     build: ./docker-images/nginx
     ports: 
-      - "80:80"
+      - "8080:80"
     depends_on:
       - php
       - mongo
-    links: 
+    links:
+      - php
       - mongo
   php:
     build: ./docker-images/php
