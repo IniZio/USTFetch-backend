@@ -26,7 +26,7 @@ $app = new Laravel\Lumen\Application(
 // $app->register(Jenssegers\Mongodb\MongodbServiceProvider::class);
 $app->register('Moloquent\MongodbServiceProvider');
 
-// $app->withFacades();
+$app->withFacades();
 
 $app->withEloquent();
 

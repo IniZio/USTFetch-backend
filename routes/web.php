@@ -11,6 +11,24 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-  return 'Hello World';
-});
+// $app->get('/', [
+//   'uses' => 'UserController@all'
+// ]);
+
+// Create task
+$app->post('task', [
+  'uses' => 'TaskController@create_task'
+]);
+
+$app->get('task', [
+  'uses' => 'TaskController@get_tasks'
+]);
+
+// Retrieve task by id
+$app->get('task/{_id}', [
+  'uses' => 'TaskController@get_tasks_by_id'
+]);
+
+$app->patch('task/{_id}', [
+  'uses' => 'TaskController@update_tasks'
+]);

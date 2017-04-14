@@ -7,7 +7,8 @@ services:
     depends_on:
       - php
       - mongo
-    links: 
+    links:
+      - php
       - mongo
   php:
     build: ./docker-images/php
