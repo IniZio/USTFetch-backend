@@ -15,6 +15,11 @@
 //   'uses' => 'UserController@all'
 // ]);
 
+/*
+|--------------------------------------------------------------------------
+| Task
+|--------------------------------------------------------------------------
+*/
 // Create task
 $app->post('task', [
   'uses' => 'TaskController@create_task'
@@ -26,9 +31,28 @@ $app->get('task', [
 
 // Retrieve task by id
 $app->get('task/{_id}', [
-  'uses' => 'TaskController@get_tasks_by_id'
+  'uses' => 'TaskController@get_task_by_id'
 ]);
 
 $app->patch('task/{_id}', [
   'uses' => 'TaskController@update_tasks'
+]);
+
+/*
+|--------------------------------------------------------------------------
+| Review
+|--------------------------------------------------------------------------
+*/
+// Create review
+$app->post('review', [
+  'uses' => 'ReviewController@create_review'
+]);
+
+$app->get('review', [
+  'uses' => 'ReviewController@get_reviews'
+]);
+
+// Retrieve review by id
+$app->get('review/{_id}', [
+  'uses' => 'ReviewController@get_review_by_id'
 ]);
