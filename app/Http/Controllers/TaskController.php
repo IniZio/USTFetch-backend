@@ -22,9 +22,8 @@ class TaskController extends Controller
      *  @param 
      */
     public function create_task(Request $request) {
+        // TODO: validate request
         return Task::create($request->input());
-
-        // return Task::last();
     }
 
     /**
@@ -36,7 +35,7 @@ class TaskController extends Controller
         if (!empty($_id)) {
             return Task::find($_id);
         }
-        return [];
+        return null;
     }
 
     /**
@@ -57,6 +56,7 @@ class TaskController extends Controller
             if ($fetcher_id != null) {
                 $q->where('fetcher_id', '=', $fetcher_id);
             }
+            // TODO: add limit
         })->get();
     }
 
