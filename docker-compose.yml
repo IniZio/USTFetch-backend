@@ -1,5 +1,13 @@
 version: '3.1'
 services: 
+  nodejs:
+    build: ./docker-images/nodejs
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mongo
+    links:
+      - mongo
   nginx:
     build: ./docker-images/nginx
     ports: 
