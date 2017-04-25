@@ -15,20 +15,47 @@
 //   'uses' => 'UserController@all'
 // ]);
 
-// Create task
-$app->post('task', [
-  'uses' => 'TaskController@create_task'
+// Register user
+$app->post('user', [
+  'uses' => 'UserController@create_user'
 ]);
 
-$app->get('task', [
-  'uses' => 'TaskController@get_tasks'
+// Login to get token
+$app->post('login', [
+  'uses' => 'TokenController@login'
 ]);
 
-// Retrieve task by id
-$app->get('task/{_id}', [
-  'uses' => 'TaskController@get_tasks_by_id'
-]);
+$app->group(['middleware' => 'jwt'], function($app) {
+  // Retrieve user
+  $app->get('user/{_itsc}', [
+    'uses' => 'UserController@get_user_by_id'
+  ]);
 
-$app->patch('task/{_id}', [
-  'uses' => 'TaskController@update_tasks'
-]);
+  // Update user information
+  $app->put('user', [
+    'uses' => 'UserController@update_user'
+  ]);
+
+  // Delete user
+  $app->delete('user', [
+    'uses' => 'UserController@delete_user'
+  ]);
+  
+  // Create task
+  $app->post('task', [
+    'uses' => 'TaskController@create_task'
+  ]);
+
+  $app->get('task', [
+    'uses' => 'TaskController@get_tasks'
+  ]);
+
+  // Retrieve task by id
+  $app->get('task/{_id}', [
+    'uses' => 'TaskController@get_tasks_by_id'
+  ]);
+
+  $app->put('task/{_id}', [
+    'uses' => 'TaskController@update_tasks'
+  ]);
+});
