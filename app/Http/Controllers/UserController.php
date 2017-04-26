@@ -34,7 +34,7 @@ class UserController extends Controller
         $payload['exp'] = time() + 3600 * 24;
 
         $token = $jwt->createToken($payload);
-        return (string) 'Bearer '.$token;
+        return response(['success' => 'true', 'token' => 'Bearer '.$token]);
     }
 
     /**
@@ -62,17 +62,23 @@ class UserController extends Controller
         $user->fill($form);
         $user->save();
 
-        return User::find($this->jwtPayload()['itsc']);
+        return response(array_merge(['success' => 'true'], User::find($this->jwtPayload()['itsc'])));
     }
 
+    /**
+     * Delete user itself
+     *
+     * @param Request $request
+     * @return void
+     */
     public function delete_user(Request $request) {
         $user = User::find($this->jwtPayload()['itsc']);
 
         if (isset($user)) {
             $user->delete();
-            return response(['success' => 'true']);
+            return response(array_merge(['success' => 'true'], $user));
         }
 
-        abort(403, 'Entry not exist');
+        return response(['success' => 'false', 'message' => 'Entry not exist']);
     }
 }

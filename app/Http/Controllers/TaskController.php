@@ -23,7 +23,7 @@ class TaskController extends Controller
      */
     public function create_task(Request $request) {
         // TODO: validate request
-        return Task::create($request->input());
+        return response(Task::create($request->input()));
     }
 
     /**

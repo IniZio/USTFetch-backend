@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use GenTux\Jwt\JwtToken;
+use GenTux\Jwt\GetsJwtToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 use App\User;
 
 class TokenController extends Controller {
+    use GetsJwtToken;
     /**
      * Create a new controller instance.
      *
@@ -25,8 +27,17 @@ class TokenController extends Controller {
             $token = $jwt->createToken($payload);
 
             // lol somehow the Authorization token need to add 'Bearer ' at front, dunno is it just a joke :/
-            return (string) 'Bearer '.$token;
+            return response(['success' => 'true', 'token' => 'Bearer '.$token]);
         }
-        abort(403, 'Failed login');
+        return response(['success' => 'false', 'message' => 'Failed login']);
+    }
+
+    public function logout(Request $request) {
+        $user = User::find($this->jwtPayload()['itsc']);
+
+        if (isset($user)) {
+            $user->delete();
+            return response(array_merge(['success' => 'true'], $user));
+        }
     }
 }
