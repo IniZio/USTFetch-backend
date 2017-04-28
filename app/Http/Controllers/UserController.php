@@ -27,6 +27,11 @@ class UserController extends Controller
      * @return void
      */
     public function create_user(Request $request, JwtToken $jwt) {
+        // Check if is already registered
+        if (!empty(User::find($request->input('itsc')))) {
+            return response(['success' => 'false', 'message' => 'ITSC already registered']);
+        }
+
         $form = $request->input();
         $form['password'] = app('hash')->make($form['password']);
 
