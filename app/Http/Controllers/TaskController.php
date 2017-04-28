@@ -23,7 +23,7 @@ class TaskController extends Controller
      */
     public function create_task(Request $request) {
         // TODO: validate request
-        return response(Task::create($request->input()));
+        return response(array_merge(['success' => 'true', 'task' => Task::create($request->input())]));
     }
 
     /**
@@ -45,6 +45,8 @@ class TaskController extends Controller
      * @return void
      */
     public function get_tasks(Request $request) {
+        $limit = 20;
+        $page = 0;
         return Task::where(function ($q) use ($request) {
             // Filter by requester's id
             $requester_id = $request->query('rid');
@@ -56,8 +58,11 @@ class TaskController extends Controller
             if ($fetcher_id != null) {
                 $q->where('fetcher_id', '=', $fetcher_id);
             }
-            // TODO: add limit
-        })->get();
+
+            if ($request->query('page') > 0) {
+                $page = $request->query('page');
+            }
+        })->skip($page * $limit)->take($limit)->get();
     }
 
     /**
