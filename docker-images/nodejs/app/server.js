@@ -9,10 +9,6 @@ var client = require('socket.io').listen(8080).sockets
 
 const CHATS_URL = 'mongodb://mongo:27017/chats'
 
-// function createRoom (db, room) {
-//   db.
-// }
-
 mongo.connect(CHATS_URL, function (err, db) {
   if (err) throw err
 
@@ -26,19 +22,19 @@ mongo.connect(CHATS_URL, function (err, db) {
       chatRoom.find().limit(100).toArray(function (err, history) {
         if (err) throw err
 
-        socket.emit('message history', history)
-        console.log('User ' + userID + ' joined chatroom ' + chatID)
+        socket.emit('message history', { chatID, history })
+        console.log('User ' + userID + ' joined chatroom ' + chatID, 'history: ' + JSON.stringify(history, null, 2))
       })
     })
 
-    socket.on('send message', function ({ chatID, senderID, content }) {
+    socket.on('send message', function ({ chatID, dialog }) {
       console.log('chat: ', chatID)
       var chatRoom = db.collection(chatID)
-      chatRoom.insert({ chatID, senderID, content }, function(err, o) {
+      chatRoom.insert(dialog, function (err, o) {
         if (err) { console.warn(err.content) }
-        socket.broadcast.to(chatID).emit('receive message', { senderID, content })
+        socket.broadcast.to(chatID).emit('receive message', { chatID, dialog })
         // socket.emit('receive message', { senderID, content })
-        console.log('User ' + senderID + ' sent message: ' + content)
+        console.log('User ' + dialog.senderID + ' sent message: ' + dialog.content)
       })
     })
 

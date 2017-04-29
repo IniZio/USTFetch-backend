@@ -36,7 +36,7 @@ class UserController extends Controller
         $form['password'] = app('hash')->make($form['password']);
 
         $payload = User::create($form);
-        $payload['exp'] = time() + 3600 * 24;
+        $payload['exp'] = time() + 3600 * 24 * 100;
 
         $token = $jwt->createToken($payload);
         return response(['success' => 'true', 'token' => 'Bearer '.$token]);

@@ -72,10 +72,9 @@ class TaskController extends Controller
      * @param string $_id
      * @return void
      */
-    public function update_tasks(Request $request, $_id) {
+    public function update_task(Request $request, $_id) {
         $tasks = Task::find($_id);
-        $tasks->fill($request->input());
-        $tasks->save();
+        $tasks->update($request->input());
 
         return Task::find($_id);
     }

@@ -56,6 +56,6 @@ $app->group(['middleware' => 'jwt'], function($app) {
   ]);
 
   $app->put('task/{_id}', [
-    'uses' => 'TaskController@update_tasks'
+    'uses' => 'TaskController@update_task'
   ]);
 });

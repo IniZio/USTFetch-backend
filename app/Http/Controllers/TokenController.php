@@ -20,15 +20,23 @@ class TokenController extends Controller {
         parent::__construct();
     }
 
+    /**
+     * Login user
+     *
+     * @param Request $request
+     * @param JwtToken $jwt
+     * @return void
+     */
     public function login(Request $request, JwtToken $jwt) {
         $payload = User::find($request->input('itsc'));
         if (isset($payload) and Hash::check($request->input('password'), ($payload->makeVisible('password'))['password'])) {
-            $payload['exp'] = time() + 3600 * 24;
+            $payload['exp'] = time() + 3600 * 24 * 100;
             $token = $jwt->createToken($payload);
 
             // lol somehow the Authorization token need to add 'Bearer ' at front, dunno is it just a joke :/
             return response(['success' => 'true', 'token' => 'Bearer '.$token]);
         }
+        // TODO: distringuish between wrong password or wrong itsc
         return response(['success' => 'false', 'message' => 'Failed login']);
     }
 
