@@ -29,7 +29,7 @@ class UserController extends Controller
     public function create_user(Request $request, JwtToken $jwt) {
         // Check if is already registered
         if (!empty(User::find($request->input('itsc')))) {
-            return response(['success' => 'false', 'message' => 'ITSC already registered']);
+            return response(['success' => false, 'message' => 'ITSC already registered']);
         }
 
         $form = $request->input();
@@ -39,7 +39,7 @@ class UserController extends Controller
         $payload['exp'] = time() + 3600 * 24 * 100;
 
         $token = $jwt->createToken($payload);
-        return response(['success' => 'true', 'token' => 'Bearer '.$token]);
+        return response(['success' => true, 'token' => 'Bearer '.$token]);
     }
 
     /**
@@ -67,7 +67,7 @@ class UserController extends Controller
         $user->fill($form);
         $user->save();
 
-        return response(array_merge(['success' => 'true'], User::find($this->jwtPayload()['itsc'])));
+        return response(array_merge(['success' => true], User::find($this->jwtPayload()['itsc'])));
     }
 
     /**
@@ -81,9 +81,9 @@ class UserController extends Controller
 
         if (isset($user)) {
             $user->delete();
-            return response(array_merge(['success' => 'true'], $user));
+            return response(array_merge(['success' => true], $user));
         }
 
-        return response(['success' => 'false', 'message' => 'Entry not exist']);
+        return response(['success' => false, 'message' => 'Entry not exist']);
     }
 }

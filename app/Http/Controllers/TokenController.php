@@ -34,10 +34,10 @@ class TokenController extends Controller {
             $token = $jwt->createToken($payload);
 
             // lol somehow the Authorization token need to add 'Bearer ' at front, dunno is it just a joke :/
-            return response(['success' => 'true', 'token' => 'Bearer '.$token]);
+            return response(['success' => true, 'token' => 'Bearer '.$token]);
         }
         // TODO: distringuish between wrong password or wrong itsc
-        return response(['success' => 'false', 'message' => 'Failed login']);
+        return response(['success' => false, 'message' => 'Failed login']);
     }
 
     public function logout(Request $request) {
@@ -45,7 +45,7 @@ class TokenController extends Controller {
 
         if (isset($user)) {
             $user->delete();
-            return response(array_merge(['success' => 'true'], $user));
+            return response(array_merge(['success' => true], $user));
         }
     }
 }

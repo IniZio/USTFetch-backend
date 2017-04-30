@@ -23,7 +23,7 @@ class TaskController extends Controller
      */
     public function create_task(Request $request) {
         // TODO: validate request
-        return response(array_merge(['success' => 'true', 'task' => Task::create($request->input())]));
+        return response(array_merge(['success' => true, 'task' => Task::create($request->input())]));
     }
 
     /**
