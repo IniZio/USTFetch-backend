@@ -52,7 +52,7 @@ $app->group(['middleware' => 'jwt'], function($app) {
 
   // Retrieve task by id
   $app->get('task/{_id}', [
-    'uses' => 'TaskController@get_tasks_by_id'
+    'uses' => 'TaskController@get_task_by_id'
   ]);
 
   $app->put('task/{_id}', [
