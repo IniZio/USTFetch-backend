@@ -23,7 +23,7 @@ class TaskController extends Controller
      */
     public function create_task(Request $request) {
         // TODO: validate request
-        return response(array_merge(['success' => true, 'task' => Task::create($request->input())]));
+        return response(array_merge(['success' => true, 'task' => Task::create(array_merge($request->input(), ['status' => 'PENDING']))]));
     }
 
     /**
@@ -48,21 +48,35 @@ class TaskController extends Controller
         $limit = 20;
         $page = 0;
         return Task::where(function ($q) use ($request) {
-            // Filter by requester's id
-            $requester_id = $request->query('rid');
-            if ($requester_id != null) {
-                $q->where('requester_id', '=', $requester_id);
-            }
-            // Filter by fetcher's id
-            $fetcher_id = $request->query('fid');
-            if ($fetcher_id != null) {
-                $q->where('fetcher_id', '=', $fetcher_id);
+            // Filter all relevant user's id (i.e. fetcher or requester)
+            $relevant_id = $request->query('rfid');
+            if ($relevant_id != null) {
+                $q->where('requester_id', '=', $relevant_id)->orWhere('fetcher_id', '=', $relevant_id);
+            } else {
+                // Filter by requester's id
+                $requester_id = $request->query('rid');
+                if ($requester_id != null) {
+                    $q->where('requester_id', '=', $requester_id);
+                }
+                // Filter by fetcher's id
+                $fetcher_id = $request->query('fid');
+                if ($fetcher_id != null) {
+                    $q->where('fetcher_id', '=', $fetcher_id);
+                }
             }
 
             if ($request->query('page') > 0) {
                 $page = $request->query('page');
             }
-        })->skip($page * $limit)->take($limit)->get();
+            $status = $request->query('status');
+            if ($status != null) {
+                $q->where('status', '=', $status);
+            }
+            $nstatus = $request->query('nstatus');
+            if ($nstatus != null) {
+                $q->where('status', '!=', $nstatus);
+            }
+        })->orderBy('updated_at', 'desc')->skip($page * $limit)->take($limit)->get();
     }
 
     /**
