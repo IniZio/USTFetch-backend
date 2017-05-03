@@ -61,13 +61,13 @@ class UserController extends Controller
      */
     public function update_user(Request $request) {
         $form = $request->input();
-        unset($form['itsc']);
+        unset($form['itsc']);unset($form['rating']);
         
         $user = User::find($this->jwtPayload()['itsc']);
         $user->fill($form);
         $user->save();
 
-        return response(array_merge(['success' => true], User::find($this->jwtPayload()['itsc'])));
+        return response(['success' => true, 'profile' => User::find($this->jwtPayload()['itsc'])]);
     }
 
     /**
