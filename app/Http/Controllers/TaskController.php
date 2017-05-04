@@ -45,9 +45,12 @@ class TaskController extends Controller
      * @return void
      */
     public function get_tasks(Request $request) {
-        $limit = 20;
+        $limit = 7;
         $page = 0;
-        return Task::where(function ($q) use ($request) {
+        if ($request->query('page') > 0) {
+            $page = $request->query('page');
+        }
+       return Task::where(function ($q) use ($request) {
             // Filter all relevant user's id (i.e. fetcher or requester)
             $relevant_id = $request->query('rfid');
             if ($relevant_id != null) {
@@ -65,9 +68,6 @@ class TaskController extends Controller
                 }
             }
 
-            if ($request->query('page') > 0) {
-                $page = $request->query('page');
-            }
             $status = $request->query('status');
             if ($status != null) {
                 $q->where('status', '=', $status);
@@ -76,7 +76,11 @@ class TaskController extends Controller
             if ($nstatus != null) {
                 $q->where('status', '!=', $nstatus);
             }
-        })->orderBy('updated_at', 'desc')->skip($page * $limit)->take($limit)->get();
+            $keyword = $request->query('keyword');
+            if ($keyword != null) {
+                $q->where('objective', 'like', $keyword);
+            }
+        })->orderBy('updated_at', 'desc')->skip($page * $limit)->limit($limit)->get();
     }
 
     /**

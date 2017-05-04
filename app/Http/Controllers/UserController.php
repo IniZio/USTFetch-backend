@@ -34,6 +34,7 @@ class UserController extends Controller
 
         $form = $request->input();
         $form['password'] = app('hash')->make($form['password']);
+        $form['rating'] = 3;
 
         $payload = User::create($form);
         $payload['exp'] = time() + 3600 * 24 * 100;
