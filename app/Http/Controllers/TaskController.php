@@ -78,7 +78,7 @@ class TaskController extends Controller
             }
             $keyword = $request->query('keyword');
             if ($keyword != null) {
-                $q->where('objective', 'like', $keyword);
+                $q->where('objective', 'regex', '/.*'.$keyword.'.*/');
             }
         })->orderBy('updated_at', 'desc')->skip($page * $limit)->limit($limit)->get();
     }
