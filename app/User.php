@@ -13,7 +13,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 {
     use Authenticatable, Authorizable;
 
-    protected $collection = 'users';    
+    protected $collection = 'users';
+    protected $primaryKey = 'itsc';
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +22,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'username', 'fullname', 'itsc', 'password', 'rating'
     ];
 
     /**

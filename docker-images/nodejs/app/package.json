@@ -1,0 +1,17 @@
+{
+  "name": "ustfetch-nodejs",
+  "version": "1.0.0",
+  "description": "NodeJs backend for USTFetch",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "IniZio",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mongodb": "^2.2.26",
+    "socket.io": "^1.7.3"
+  }
+}
