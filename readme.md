@@ -1,4 +1,4 @@
-# USTFetch Backend
+# [Abandoned] USTFetch Backend
 
 ### Fire up:
 0. Copy .env.example to .env file
