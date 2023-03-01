@@ -21,4 +21,4 @@
 - mongodb: database for lumen and chatroom
 
 ### API
-[blueprint](docs.ustfetch.apiary.io)
+[blueprint](https://docs.ustfetch.apiary.io)
